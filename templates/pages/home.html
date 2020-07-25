@@ -1,5 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Extend base<h1>
+<h1>welcome to Tweet<h1>
+<div id='tweets'>
+    Replace me
+</div>    
+
+<script>
+//get and set the element      
+const tweetsElement = document.getElementById("tweets")
+
+    
+const xhr = new XMLHttpRequest()
+const method = 'GET'
+const url = "/tweets"
+const responseType = "json"
+
+function formatTweetElement(tweet) {
+    var formattedTweet = "<div class='mb-4 tweet' id='tweet-'>" +tweet.id +"<p>"+ tweet.content +"</p></div>"
+    return formattedTweet
+}
+
+xhr.responseType = responseType
+xhr.open(method, url)
+xhr.onload = function() {
+    
+    const serverResponse = xhr.response
+    const listedItems = serverResponse.response //Array
+    var finalTweetStr= ""
+    var i;
+    for (i=0;i<listedItems.length;i++) {
+        console.log(i)
+        console.log(listedItems[i])
+        var tweetObj = listedItems[i]
+        var currentItem = formatTweetElement(tweetObj)
+        finalTweetStr += currentItem
+    }
+    tweetsElement.innerHTML = finalTweetStr
+    console.log(listedItems)
+   }
+xhr.send()   
+</script>    
 {% endblock %}
