@@ -13,7 +13,7 @@
         <form  class='form' id='tweet-create-form' action="/create-tweet/" method="POST">
             {% csrf_token %}
             <input type="hidden" value="/" name="next" />
-            <textarea class="form-control" name="content" placeholder="Your Tweet"></textarea>
+            <textarea required='required' class="form-control" name="content" placeholder="Your Tweet"></textarea>
             <button type="submit" class = 'btn btn-primary'>Tweet</button>
         </form>
     </div>
@@ -43,17 +43,28 @@ function handleTweetCreateFormDidSubmit(event) {
     xhr.onload = function () {
         if(xhr.status===201){
             const newTweet = xhr.response
-            console.log(newTweet.likes)
+            //console.log(newTweet.likes)
             const newTweetElement= formatTweetElement(newTweet)
-            console.log(newTweetElement)
+            //console.log(newTweetElement)
             const ogHtml= tweetsContainerElement.innerHTML
-            tweetsContainerElement.innerHTML = newTweetElement + ogHtml    
+            tweetsContainerElement.innerHTML = newTweetElement + ogHtml
+            myForm.reset()    
+        } else if (xhr.status === 400){
+            const errorJson = xhr.response
+            console.log(errorJson)
+        } else if (xhr.status === 500){
+            alert("There was a server error,please try")
+        } else if (xhr.status === 401){
+            alert("You must login")
+            window.location.href = "/login"
         }
         
-        console.log(xhr.status, serverResponse)
         const tweetsEl = document.getElementById("tweets")
         loadTweets(tweetsEl) 
         
+    }
+    xhr.onerror = function(){
+        alert("An error occurred.Please try again later")
     }
     xhr.send(myFormData)
 }
