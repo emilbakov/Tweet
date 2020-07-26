@@ -11,8 +11,12 @@
     <title>Tweet</title>
   </head>
   <body>
-    {% block content %}
-    {% endblock %}
+    {% include "components/navbar.html" %}
+    <div class='container'>
+      {% block content %}
+      
+      {% endblock %}
+    </div>  
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
