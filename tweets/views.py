@@ -4,8 +4,12 @@ from django.conf import settings
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
-from rest_framework.decorators import api_view
+
+from rest_framework.decorators import api_view, permission_classes,authentication_classes
+from rest_framework.permissions import IsAuthenticated 
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication
+
 from .forms import TweetForm
 
 from .models import Tweet
@@ -20,7 +24,10 @@ def home_view(request, *args,**kwargs):
 
 
 #rest framework
-@api_view(['POST']) 
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated]) 
 def tweet_create_view(request,*args,**kwargs):
     serializer = TweetSerializer(data=request.POST)
     if serializer.is_valid():
@@ -28,11 +35,13 @@ def tweet_create_view(request,*args,**kwargs):
         return Response(serializer.data, status=201)
     return Response({},status=400)
 
+
 @api_view(['GET']) 
 def tweet_list_view(request,*args,**kwargs):
     qs=Tweet.objects.all()
     serializer = TweetSerializer(qs,many=True)
     return Response(serializer.data,status=200)
+
 
 @api_view(['GET']) 
 def tweet_detail_view(request,tweet_id,*args,**kwargs):
