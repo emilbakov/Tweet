@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
 function loadTweets(callback) {
   const xhr = new XMLHttpRequest()
   const method = 'GET'
@@ -19,12 +20,21 @@ function loadTweets(callback) {
   xhr.send()    
 }
 
+function LikeBtn(props){
+  const{tweet} = props
+  const className = props.className ? props.className:'btn btn-primary btn-sm'
+  return <button className={className} > {tweet.likes} Likes</button>
+}
+
+
 function Tweet(props) {
   const{tweet} = props
   const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
   return <div className={className}>
     <p>{tweet.id}-{tweet.content}</p>
-    
+    <div className='btn btn-group'>
+      <LikeBtn tweet={tweet} />
+    </div>
   </div>
 }
 
@@ -55,7 +65,7 @@ function App() {
         </p>
         <div>
           {tweets.map((item,index)=>{ 
-            return <Tweet tweet={item} key={'${index}-{tweet.id}'} className='my-5 py-5 border bg-white text-dark'/>
+            return <Tweet tweet={item} className='my-5 py-5 border bg-white text-dark' key ={`${index}-{item.id}`}/>
 
           })}
         </div> 
