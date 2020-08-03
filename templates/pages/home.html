@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div class="row mb-3">
+<div class="row mb-3 d-none">
     <div class="col-md-4 mx-auto col-10">
         <form  class='form' id='tweet-create-form' action="/create-tweet/" method="POST">
             {% csrf_token %}
@@ -21,7 +21,9 @@
 </div>
 
 
-<div class="row" id='tweets'>
+<div class="row" id='tweetme'></div>
+
+<div class="row d-none" id='tweets'>
     Replace me
 </div>    
 

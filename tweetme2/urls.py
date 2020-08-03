@@ -36,7 +36,7 @@ urlpatterns = [
     path('tweets/<int:tweet_id>/',tweet_detail_view),
     path('tweets/',tweet_list_view),
     path('api/tweets/', include('tweets.urls')),
-    path('react/',TemplateView.as_view(template_name='react.html'))
+    path('react/',TemplateView.as_view(template_name='react_via_dj.html'))
 ]
 
 if settings.DEBUG:
