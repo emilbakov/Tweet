@@ -15,9 +15,11 @@ if (appEl){
   );
 }
 
+const e = React.createElement
 const tweetsEl= document.getElementById('tweetme')
 if (tweetsEl) {
-  ReactDOM.render(<TweetComponent />,tweetsEl    
+  console.log(tweetsEl.dataset)
+  ReactDOM.render(e(TweetComponent, tweetsEl.dataset), tweetsEl    
   );
 
 }
