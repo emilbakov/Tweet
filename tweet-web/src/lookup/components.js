@@ -24,16 +24,22 @@ export function backendLookup(method, endpoint, callback, data) {
   xhr.responseType = "json"
   const csrftoken = getCookie('csrftoken')
   xhr.open(method, url)
+  xhr.setRequestHeader("Content-Type", "application/json")
   
   
   if (csrftoken){
 
-    xhr.setRequestHeader("Content-Type", "application/json") 
+     
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xhr.setRequestHeader("X-CSRFToken", csrftoken)
     //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
   };
   xhr.onload = function () {
+    if (xhr.status === 403) {
+      const detail= xhr.response.detail
+      if(detail === "Authentication credentials were not provided.")
+      window.location.href = "/login"
+    }
     callback(xhr.response, xhr.status);
   };
   xhr.onerror = function (e) {
