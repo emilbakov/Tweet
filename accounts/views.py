@@ -7,7 +7,11 @@ from django.contrib.auth import login, logout
 def register_view(request,*args,**kwargs):
     form =  UserCreationForm(request.POST or None)
     if form.is_valid():
-        print(form.cleaned_data)     
+        user = form.save(commit=True)
+        user.set_password(form.cleaned_data.get("password1"))
+        login(request,user)
+        return redirect("/")
+            
 
     context ={
         "form":form,
@@ -37,8 +41,9 @@ def logout_view(request,*args,**kwargs):
         return redirect("/login")
     context ={
         "form":None,
-        "btn_label": "Logout?",
-        "title":"LOgout"
+        "description":"Are you sure you want to logout? ",
+        "btn_label": "Click to Confirm",
+        "title":"Logout"
 
     }    
     return render(request,"accounts/auth.html", context)

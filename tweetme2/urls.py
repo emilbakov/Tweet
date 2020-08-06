@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
-from django.urls import path,include
+from django.urls import path,include,re_path
 
 from accounts.views import ( 
     register_view,
@@ -30,7 +30,7 @@ from accounts.views import (
 from tweets.views import (
    tweet_list_view,
    tweet_detail_view,
-   tweet_profile_view
+   
 )
 
 urlpatterns = [
@@ -40,7 +40,7 @@ urlpatterns = [
     path('logout/',logout_view),
     path('register/',register_view),
     path('<int:tweet_id>/',tweet_detail_view),
-    path('profile/<str:username>',tweet_profile_view),
+    re_path(r'profiles?/',include('profiles.urls')),
     path('api/tweets/', include('tweets.api.urls')),
    
 ]
