@@ -23,16 +23,6 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 #rest framework
 
-@api_view(['POST'])
-
-@permission_classes([IsAuthenticated]) 
-def user_profile_detail_view(request,username,*args,**kwargs):
-    current_user= request.user
-
-    
-        
-        
-    return Response({},status=400)
 
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated]) 

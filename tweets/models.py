@@ -14,14 +14,15 @@ class TweetLike(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class TweetQuerySet(models.QuerySet):
+
     def by_username(self,username):
-        return self.filter(user__usename__iexact=username)
+        return self.filter(user__username__iexact=username)
 
     def feed(self,user):
         profiles_exist = user.following.exists()
         followed_user_id=[]
         if profiles_exist:
-            followed_user_id= user.following.values_list("user__id",flat=True)
+            followed_user_id= user.following.values_list("user__id", flat=True)
         return self.filter(
             Q(user__id__in=followed_user_id) |
             Q(user=user)
@@ -36,7 +37,7 @@ class TweetManager(models.Manager):
 
 class Tweet(models.Model):
 
-    parent = models.ForeignKey("self",null=True,blank =True,on_delete=models.SET_NULL)
+    parent = models.ForeignKey("self",null=True,on_delete=models.SET_NULL)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=True,null=True)
     likes = models.ManyToManyField(User,related_name='tweet_user', blank=True,through=TweetLike)
