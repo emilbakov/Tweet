@@ -5,16 +5,11 @@ import {ActionBtn} from './buttons'
 
 export function ParentTweet(props) {
     const{tweet} = props
-    return tweet.parent ? <div className='row'>
-    <div className='col-11 mx-auto p-3 border rounded'>
-      <p className='mb-0'>Retweet</p>
-      <Tweet hideAction className={''} tweet={tweet.parent} />       
-    </div>
-    </div> : null
+    return tweet.parent ? <Tweet isRetweet hideAction className={''} tweet={tweet.parent} /> : null
   } 
   
   export function Tweet(props) {
-      const{tweet,didRetweet,hideAction} = props
+      const{tweet,didRetweet,hideAction, isRetweet} = props
       const [actionTweet,setActionTweet]= useState (props.tweet ? props.tweet :null)
       const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
       const path = window.location.pathname
@@ -41,12 +36,27 @@ export function ParentTweet(props) {
       }
       
       return <div className={className}>
+       <div className='d-flex'>
+        <div className=''>
+          <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
+          {tweet.user.username[0]}
+          </span>
+
+        </div>
+        <div className='col-11'>
         <div>
-          <p>{tweet.id}-{tweet.content}</p>
+         {isRetweet=== true && <span className ='small text-muted'>Retweet</span>}
+          <p>
+            {tweet.user.first_name}{" "}
+            {tweet.user.last_name}{" "}
+            @{tweet.user.username}
+          </p>
+          <p>{tweet.content}</p>
+          
           <ParentTweet tweet={tweet} />
         </div>
         
-        <div className='btn btn-group'>
+        <div className='btn btn-group px-0'>
         
         {(actionTweet && hideAction !==true) && <React.Fragment>
           <ActionBtn tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:'like', display:"Likes"}}/>
@@ -56,5 +66,7 @@ export function ParentTweet(props) {
         }  
           {isDetail === true ? null :<button className='btn btn-outline-primary' onClick={handleLink}>View</button>}
         </div>
-      </div>
+      </div>  
+     </div>
+     </div> 
     }
